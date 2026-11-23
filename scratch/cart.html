@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Store Cart</title>
+    
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .cart {
+      width: 100%;
+      max-width: 400px;
+      background-color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      padding: 25px 20px;
+    }
+
+    .cart h2 {
+      text-align: left;
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .cart li:last-child {
+      border-bottom: none;
+    }
+
+    .remove-btn {
+      background-color: transparent;
+      border: 1px solid #ccc;
+      padding: 2px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+    .remove-btn:hover {
+      background-color: #f8f9fa;
+    }
+
+    .cart-total {
+      font-weight: bold;
+      font-size: 18px;
+      text-align: right;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    .cart-empty {
+      color: #666;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .go-to-cart-btn {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      width: 100%;
+    }
+
+    .go-to-cart-btn:hover {
+      background-color: #444;
+    }
+
+    #checkout-section {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+      display: none; /* Hide checkout section by default */
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #218838;
+    }
+
+    #checkout-section h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    #address {
+      width: 100%;
+      border-radius: 6px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      resize: none;
+      margin-bottom: 15px;
+    }
+
+    #qr-code {
+      display: none;
+      width: 200px;
+      margin: 10px auto;
+      display: none;
+      border-radius: 8px;
+      
+    }
+
+    .message {
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+
+    /* Disable form during submission */
+    .processing {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <div id="message-container"></div>
+    <div id="loading" class="loading">Processing your order...</div>
+    <ul id="cart-items"></ul>
+    <p class="cart-total">Total: ₹<span id="cart-total">0.00</span></p>
+    <p class="cart-empty" id="empty-cart">Your cart is empty.</p>
+
+    <button class="btn-primary" onclick="showCheckoutSection()">Checkout</button>
+
+    <!-- Address & Payment Section -->
+    <div id="checkout-section" style="display: none;">
+      <h3>Enter Your Email:</h3>
+      <input type="email" id="email" placeholder="Your email address..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px;">
+
+      <h3>Enter Delivery Address:</h3>
+      <textarea id="address" rows="4" placeholder="Your full address..."></textarea>
+
+      <h3>Select Payment Method:</h3>
+      <button class="btn-secondary" onclick="showUPIField()">Pay with UPI</button>
+      <div id="upi-section" style="display: none; margin-top: 15px;">
+        <input type="text" id="upi-id" placeholder="Enter UPI ID (e.g. name@upi)" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 10px;">
+        <button class="btn-secondary" onclick="placeOrder()" style="width: 100%;">Confirm Payment</button>
+      </div>
+      <button class="btn-primary" onclick="showQRCode()">Scan QR</button>
+      <img src="../stock/QR.jpg" id="qr-code" alt="QR Code">
+
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function updateCartUI() {
+      const cartItems = document.getElementById("cart-items");
+      const cartTotal = document.getElementById("cart-total");
+      const emptyCartMessage = document.getElementById("empty-cart");
+      
+      // Get cart from localStorage
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+      
+      if (cart.length === 0) {
+        cartItems.innerHTML = "";
+        cartTotal.textContent = "0.00";
+        emptyCartMessage.style.display = "block";
+        return;
+      }
+
+      emptyCartMessage.style.display = "none";
+      let total = 0;
+
+      cartItems.innerHTML = cart.map(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+        return `
+          <li>
+            ${item.product_name} - ₹${item.price.toFixed(2)}
+            <button class="remove-btn" onclick="removeFromCart('${item.product_name}')">Remove</button>
+          </li>
+        `;
+      }).join("");
+
+      cartTotal.textContent = `Total: ₹${total.toFixed(2)}`;
+      sendCartHeight();
+    }
+
+    function removeFromCart(productName) {
+      cart = cart.filter(item => {
+        if (item.product_name === productName) {
+          if (item.quantity > 1) {
+            item.quantity--;
+            return true;
+          }
+          return false;
+        }
+        return true;
+      });
+      
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartUI();
+    }
+
+    function showCheckoutSection() {
+      const checkoutSection = document.getElementById("checkout-section");
+      checkoutSection.style.display = "block";
+      // Scroll to checkout section
+      checkoutSection.scrollIntoView({ behavior: 'smooth' });
+      sendCartHeight();
+    }
+
+    function showUPIField() {
+      document.getElementById("upi-section").style.display = "block";
+      sendCartHeight();
+    }
+
+    function showQRCode() {
+      const qr = document.getElementById("qr-code");
+      qr.style.display = "block";
+      sendCartHeight();
+    }
+
+    async function placeOrder() {
+      const email = document.getElementById("email").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const upiId = document.getElementById("upi-id").value.trim();
+
+      // Validate inputs
+      if (!email || !address) {
+        showMessage("Please fill in all required fields", false);
+        return;
+      }
+
+      if (!email.includes("@")) {
+        showMessage("Please enter a valid email address", false);
+        return;
+      }
+
+      if (!upiId) {
+        showMessage("Please enter your UPI ID", false);
+        return;
+      }
+
+      // Show loading state
+      const checkoutSection = document.getElementById("checkout-section");
+      const loading = document.getElementById("loading");
+      checkoutSection.classList.add("processing");
+      loading.style.display = "block";
+
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const transaction_id = 'TR' + Date.now();
+
+      try {
+        const response = await fetch('http://localhost:5000/manual-checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email,
+            address,
+            cartItems: cart,
+            transaction_id,
+            total_price: total
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showMessage("✅ Order placed successfully! Thank you for your purchase.", true);
+          // Clear cart
+          localStorage.removeItem("cart");
+          cart = [];
+          
+          // Show success message and redirect after a short delay
+          setTimeout(() => {
+            window.parent.location.href = '../index.html';
+          }, 1500); // Redirect after 1.5 seconds so user can see the success message
+        } else {
+          showMessage("❌ Error: " + (data.error || "Failed to place order"), false);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showMessage("❌ Error placing order. Please try again.", false);
+      } finally {
+        // Hide loading state
+        checkoutSection.classList.remove("processing");
+        loading.style.display = "none";
+      }
+    }
+
+    function showMessage(message, isSuccess) {
+      const container = document.getElementById("message-container");
+      container.innerHTML = `
+        <div class="message ${isSuccess ? 'success-message' : 'error-message'}">
+          ${message}
+        </div>
+      `;
+      container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize when page loads
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCartUI();
+      sendCartHeight();
+    });
+
+    function sendCartHeight() {
+      setTimeout(() => {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ type: "cartHeight", height }, "*");
+      }, 100);
+    }
+  </script>
+</body>
+</html>

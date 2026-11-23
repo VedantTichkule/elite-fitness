@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Precautions - Safety Guidelines</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d3436;
+            --accent-color: #00b894;
+            --text-color: #dfe6e9;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .precautions-container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .precaution-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .precaution-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .precaution-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .precaution-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .precaution-list {
+            padding: 20px;
+        }
+
+        .precaution-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .precaution-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .precaution-title {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .precaution-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .precaution-content {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .precaution-badge {
+            background: linear-gradient(135deg, var(--accent-color), #00cec9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .category-tabs {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .category-tabs .nav-link {
+            color: var(--text-color);
+            border: none;
+            padding: 12px 25px;
+            margin-right: 5px;
+            border-radius: 8px 8px 0 0;
+            background-color: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+
+        .category-tabs .nav-link:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .category-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="precautions-container">
+        <h1>Gym Safety Precautions</h1>
+
+        <ul class="nav category-tabs" id="precautionTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
+                    <i class="fas fa-shield-alt precaution-icon"></i>General Safety
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="equipment-tab" data-bs-toggle="tab" data-bs-target="#equipment" type="button" role="tab">
+                    <i class="fas fa-dumbbell precaution-icon"></i>Equipment Usage
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="health-tab" data-bs-toggle="tab" data-bs-target="#health" type="button" role="tab">
+                    <i class="fas fa-heartbeat precaution-icon"></i>Health & Wellness
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="precautionTabContent">
+            <!-- General Safety Tab -->
+            <div class="tab-pane fade show active" id="general" role="tabpanel">
+                <div class="precaution-card">
+                    <div class="precaution-header">
+                        <h3>General Safety Guidelines</h3>
+                        <span class="precaution-badge">Essential Information</span>
+                    </div>
+                    <div class="precaution-list">
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-exclamation-triangle precaution-icon"></i>
+                                Warm-up and Cool-down
+                            </div>
+                            <div class="precaution-content">
+                                Always perform proper warm-up exercises before starting your workout and cool-down stretches afterward. This helps prevent injuries and improves flexibility.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-user-shield precaution-icon"></i>
+                                Proper Form
+                            </div>
+                            <div class="precaution-content">
+                                Maintain correct form during all exercises. If unsure about proper technique, ask a trainer for guidance. Poor form can lead to serious injuries.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-tint precaution-icon"></i>
+                                Hydration
+                            </div>
+                            <div class="precaution-content">
+                                Stay hydrated before, during, and after your workout. Bring a water bottle and take regular sips to maintain optimal performance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Equipment Usage Tab -->
+            <div class="tab-pane fade" id="equipment" role="tabpanel">
+                <div class="precaution-card">
+                    <div class="precaution-header">
+                        <h3>Equipment Safety</h3>
+                        <span class="precaution-badge">Proper Usage</span>
+                    </div>
+                    <div class="precaution-list">
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-cogs precaution-icon"></i>
+                                Machine Setup
+                            </div>
+                            <div class="precaution-content">
+                                Always adjust machines to your body size and strength level. Check that all pins and settings are secure before use.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-weight precaution-icon"></i>
+                                Weight Selection
+                            </div>
+                            <div class="precaution-content">
+                                Start with lighter weights and gradually increase as you build strength. Never attempt weights beyond your capability.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-broom precaution-icon"></i>
+                                Equipment Maintenance
+                            </div>
+                            <div class="precaution-content">
+                                Wipe down equipment after use and report any malfunctioning equipment to staff immediately.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health & Wellness Tab -->
+            <div class="tab-pane fade" id="health" role="tabpanel">
+                <div class="precaution-card">
+                    <div class="precaution-header">
+                        <h3>Health & Wellness</h3>
+                        <span class="precaution-badge">Well-being</span>
+                    </div>
+                    <div class="precaution-list">
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-heart precaution-icon"></i>
+                                Medical Clearance
+                            </div>
+                            <div class="precaution-content">
+                                Consult with your doctor before starting any new exercise program, especially if you have pre-existing medical conditions.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-bed precaution-icon"></i>
+                                Rest and Recovery
+                            </div>
+                            <div class="precaution-content">
+                                Allow adequate rest between workouts and ensure you get enough sleep for proper muscle recovery.
+                            </div>
+                        </div>
+                        <div class="precaution-item">
+                            <div class="precaution-title">
+                                <i class="fas fa-utensils precaution-icon"></i>
+                                Nutrition
+                            </div>
+                            <div class="precaution-content">
+                                Maintain a balanced diet and proper nutrition to support your workout routine and recovery.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

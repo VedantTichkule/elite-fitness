@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* Global Styling */
+body {
+    background-color: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: black;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center a {
+    text-decoration: none;
+    margin: 0 25px;
+    font-size: 20px;
+    color: rgb(200, 50, 50);
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.center a:hover {
+    color: white;
+}
+
+/* Page Heading */
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.heading span {
+    color: gray;
+    border-bottom: 2px solid gray;
+    cursor: pointer;
+}
+
+/* Gym Container */
+.gym-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Gym Card */
+.gym-card {
+    background-color: #222;
+    width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Gym Image */
+.gym-image {
+    position: relative;
+}
+
+.gym-image img {
+    width: 100%;
+    height: 180px;
+    display: block;
+}
+
+/* PRO Badge */
+.pro-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: black;
+    color: white;
+    font-size: 12px;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+/* Play Button on Video */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Gym Details */
+.gym-details {
+    padding: 15px;
+    text-align: left;
+}
+
+.gym-details h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.gym-details p {
+    font-size: 14px;
+    color: gray;
+    margin: 5px 0;
+}
+
+/* Try For Free Button */
+.free-btn {
+    background: gray;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.free-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Price Info */
+.price {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gym-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+</style>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="center">
+            <a href="#">Elite</a>
+            <a href="#">PRO</a>
+            <a href="#">Home</a>
+            <a href="#">Transform</a>
+            <a href="#">Bootcamp</a>
+            <a href="#">Luxury Gyms</a>
+        </div>
+    </nav>
+
+    <!-- Page Heading -->
+    <h2 class="heading">Centers near <span>HSR Layout ⌄</span></h2>
+
+    <!-- Gym Listing Cards -->
+    <div class="gym-container">
+        <div class="gym-card">
+            <div class="gym-image">
+                <img src="gym1.jpg" alt="Cure.Fit Bangalore">
+                <span class="pro-badge">PRO</span>
+            </div>
+            <div class="gym-details">
+                <h3>CURE.FIT BANGALORE</h3>
+                <p>HSR Layout • Gym</p>
+                <button class="free-btn">TRY FOR FREE</button>
+                <hr>
+                <p class="price">Unlimited access starting at ₹608/mo*</p>
+            </div>
+        </div>
+
+        <div class="gym-card">
+            <div class="gym-image">
+                <img src="gym2.jpg" alt="Fuerza HSR">
+                <span class="pro-badge">PRO</span>
+                <div class="play-button">▶</div>
+            </div>
+            <div class="gym-details">
+                <h3>FUERZA HSR</h3>
+                <p>HSR Layout • Gym</p>
+                <button class="free-btn">TRY FOR FREE</button>
+                <hr>
+                <p class="price">Unlimited access starting at ₹608/mo*</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

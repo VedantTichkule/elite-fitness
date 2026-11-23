@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Workout - Pros and Cons</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #2d3436;
+            --accent-color: #00b894;
+            --text-color: #dfe6e9;
+            --bg-color: #1a1a1a;
+            --card-bg: #2d2d2d;
+            --border-color: #404040;
+            --pro-color: #00b894;
+            --con-color: #ff4d4d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .pros-cons-container {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+        }
+
+        .comparison-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .comparison-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .comparison-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .comparison-content {
+            padding: 20px;
+        }
+
+        .pros-section, .cons-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+        }
+
+        .pros-title {
+            color: var(--pro-color);
+        }
+
+        .cons-title {
+            color: var(--con-color);
+        }
+
+        .comparison-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border-left: 4px solid;
+            transition: all 0.3s ease;
+        }
+
+        .pros-item {
+            border-left-color: var(--pro-color);
+        }
+
+        .cons-item {
+            border-left-color: var(--con-color);
+        }
+
+        .comparison-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .item-title {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .item-icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .pros-icon {
+            color: var(--pro-color);
+        }
+
+        .cons-icon {
+            color: var(--con-color);
+        }
+
+        .item-content {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .workout-type-tabs {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .workout-type-tabs .nav-link {
+            color: var(--text-color);
+            border: none;
+            padding: 12px 25px;
+            margin-right: 5px;
+            border-radius: 8px 8px 0 0;
+            background-color: var(--card-bg);
+            transition: all 0.3s ease;
+        }
+
+        .workout-type-tabs .nav-link:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .workout-type-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="pros-cons-container">
+        <h1>Gym Workout Pros and Cons</h1>
+
+        <ul class="nav workout-type-tabs" id="workoutTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="strength-tab" data-bs-toggle="tab" data-bs-target="#strength" type="button" role="tab">
+                    <i class="fas fa-dumbbell"></i> Strength Training
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="cardio-tab" data-bs-toggle="tab" data-bs-target="#cardio" type="button" role="tab">
+                    <i class="fas fa-running"></i> Cardio Training
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="flexibility-tab" data-bs-toggle="tab" data-bs-target="#flexibility" type="button" role="tab">
+                    <i class="fas fa-yoga"></i> Flexibility Training
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="workoutTabContent">
+            <!-- Strength Training Tab -->
+            <div class="tab-pane fade show active" id="strength" role="tabpanel">
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <h3>Strength Training</h3>
+                    </div>
+                    <div class="comparison-content">
+                        <div class="pros-section">
+                            <h4 class="section-title pros-title">
+                                <i class="fas fa-check-circle pros-icon"></i> Advantages
+                            </h4>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-muscle item-icon pros-icon"></i>
+                                    Muscle Growth
+                                </div>
+                                <div class="item-content">
+                                    Builds and maintains muscle mass, increases strength, and improves overall body composition.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-fire item-icon pros-icon"></i>
+                                    Metabolism Boost
+                                </div>
+                                <div class="item-content">
+                                    Increases resting metabolic rate, helping with weight management and fat loss.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-bone item-icon pros-icon"></i>
+                                    Bone Health
+                                </div>
+                                <div class="item-content">
+                                    Strengthens bones and reduces the risk of osteoporosis.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cons-section">
+                            <h4 class="section-title cons-title">
+                                <i class="fas fa-times-circle cons-icon"></i> Disadvantages
+                            </h4>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-exclamation-triangle item-icon cons-icon"></i>
+                                    Injury Risk
+                                </div>
+                                <div class="item-content">
+                                    Higher risk of injury if proper form is not maintained or weights are too heavy.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-clock item-icon cons-icon"></i>
+                                    Time Investment
+                                </div>
+                                <div class="item-content">
+                                    Requires significant time commitment for proper recovery and progress.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-dumbbell item-icon cons-icon"></i>
+                                    Equipment Needs
+                                </div>
+                                <div class="item-content">
+                                    Often requires access to gym equipment or weights for optimal results.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cardio Training Tab -->
+            <div class="tab-pane fade" id="cardio" role="tabpanel">
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <h3>Cardio Training</h3>
+                    </div>
+                    <div class="comparison-content">
+                        <div class="pros-section">
+                            <h4 class="section-title pros-title">
+                                <i class="fas fa-check-circle pros-icon"></i> Advantages
+                            </h4>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-heart item-icon pros-icon"></i>
+                                    Heart Health
+                                </div>
+                                <div class="item-content">
+                                    Improves cardiovascular health and endurance.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-weight item-icon pros-icon"></i>
+                                    Calorie Burn
+                                </div>
+                                <div class="item-content">
+                                    Effective for burning calories and weight management.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-brain item-icon pros-icon"></i>
+                                    Mental Health
+                                </div>
+                                <div class="item-content">
+                                    Releases endorphins and reduces stress.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cons-section">
+                            <h4 class="section-title cons-title">
+                                <i class="fas fa-times-circle cons-icon"></i> Disadvantages
+                            </h4>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-exclamation-triangle item-icon cons-icon"></i>
+                                    Joint Impact
+                                </div>
+                                <div class="item-content">
+                                    Can be hard on joints, especially high-impact cardio.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-clock item-icon cons-icon"></i>
+                                    Time Consuming
+                                </div>
+                                <div class="item-content">
+                                    Requires longer sessions for significant calorie burn.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-dumbbell item-icon cons-icon"></i>
+                                    Muscle Loss
+                                </div>
+                                <div class="item-content">
+                                    Excessive cardio can lead to muscle loss if not balanced with strength training.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flexibility Training Tab -->
+            <div class="tab-pane fade" id="flexibility" role="tabpanel">
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <h3>Flexibility Training</h3>
+                    </div>
+                    <div class="comparison-content">
+                        <div class="pros-section">
+                            <h4 class="section-title pros-title">
+                                <i class="fas fa-check-circle pros-icon"></i> Advantages
+                            </h4>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-walking item-icon pros-icon"></i>
+                                    Mobility
+                                </div>
+                                <div class="item-content">
+                                    Improves range of motion and joint mobility.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-heart item-icon pros-icon"></i>
+                                    Injury Prevention
+                                </div>
+                                <div class="item-content">
+                                    Reduces risk of injuries and muscle strains.
+                                </div>
+                            </div>
+                            <div class="pros-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-brain item-icon pros-icon"></i>
+                                    Stress Relief
+                                </div>
+                                <div class="item-content">
+                                    Promotes relaxation and reduces stress.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cons-section">
+                            <h4 class="section-title cons-title">
+                                <i class="fas fa-times-circle cons-icon"></i> Disadvantages
+                            </h4>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-exclamation-triangle item-icon cons-icon"></i>
+                                    Time Investment
+                                </div>
+                                <div class="item-content">
+                                    Requires consistent practice for noticeable improvements.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-clock item-icon cons-icon"></i>
+                                    Progress Rate
+                                </div>
+                                <div class="item-content">
+                                    Improvements in flexibility can be slow and require patience.
+                                </div>
+                            </div>
+                            <div class="cons-item comparison-item">
+                                <div class="item-title">
+                                    <i class="fas fa-dumbbell item-icon cons-icon"></i>
+                                    Limited Benefits
+                                </div>
+                                <div class="item-content">
+                                    Alone, it doesn't provide significant strength or cardiovascular benefits.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

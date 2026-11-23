@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+        }
+        .container {
+            background-color: #443C3C;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        .btn {
+            background-color: red;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+        a {
+            color: lightblue;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button class="btn">Login</button>
+        <p>Don't have an account? <a href="form.html">Register</a></p>
+    </div>
+    <script>
+        // Check if user is already logged in
+        async function checkSession() {
+            try {
+                const response = await fetch("http://localhost:5001/check-session", {
+                    credentials: "include"
+                });
+                const data = await response.json();
+                if (data.loggedIn) {
+                    window.location.href = "index.html";
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+            }
+        }
+
+        // Check session on page load
+        checkSession();
+
+        document.querySelector(".btn").addEventListener("click", async function (e) {
+            e.preventDefault();
+    
+            const email = document.querySelector("input[type='email']").value;
+            const password = document.querySelector("input[type='password']").value;
+    
+            try {
+                const response = await fetch("http://localhost:5001/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ email, password })
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    // Store user data in localStorage for frontend use
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    alert("Login successful!");
+                    window.location.href = "index.html";
+                } else {
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed. Please try again.');
+            }
+        });
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Review - Elite Fitness</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../stock/gym\ image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .review-form-container {
+            max-width: 600px;
+            width: 90%;
+            margin: 20px auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 0 20px #45ffcc;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #45ffcc;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #45ffcc;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #00ffaa;
+            box-shadow: 0 0 10px #45ffcc;
+        }
+
+        .rating {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .star {
+            font-size: 32px;
+            cursor: pointer;
+            color: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: gold;
+            transform: scale(1.2);
+        }
+
+        .submit-btn {
+            background: #45ffcc;
+            color: black;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: #00ffaa;
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #45ffcc;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            color: #45ffcc;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #00ffaa;
+            text-shadow: 0 0 10px #45ffcc;
+        }
+
+        h2 {
+            text-align: center;
+            color: #45ffcc;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="review-form-container">
+        <h2>Submit Your Review</h2>
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your name">
+            </div>
+            
+            <div class="form-group">
+                <label>Rating:</label>
+                <div class="rating" id="rating">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+                <input type="hidden" id="ratingValue" name="rating" value="0">
+            </div>
+
+            <div class="form-group">
+                <label for="review">Your Review:</label>
+                <textarea id="review" name="review" rows="4" required placeholder="Share your experience with us..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Review</button>
+        </form>
+        <a href="index.html" class="back-btn">← Back to Home</a>
+    </div>
+
+    <script>
+        // Update the checkLogin function
+        function checkLogin() {
+            const userData = localStorage.getItem('user');
+            if (!userData) {
+                return false;
+            }
+            return true;
+        }
+
+        // Check login when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkLogin()) {
+                // Show login message instead of form
+                document.querySelector('.review-form-container').innerHTML = `
+                    <h2>Please Login</h2>
+                    <p style="text-align: center; margin-bottom: 20px;">You need to be logged in to submit a review</p>
+                    <a href="form.html" class="submit-btn" style="display: block; text-align: center; text-decoration: none;">Login Now</a>
+                    <a href="index.html" class="back-btn">← Back to Home</a>
+                `;
+                return;
+            }
+
+            // Get current user's name
+            const userData = JSON.parse(localStorage.getItem('user'));
+            document.getElementById('name').value = userData.username;
+            document.getElementById('name').readOnly = true;
+
+            // Star rating functionality
+            const stars = document.querySelectorAll('.star');
+            const ratingInput = document.getElementById('ratingValue');
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const value = star.getAttribute('data-value');
+                    ratingInput.value = value;
+                    
+                    stars.forEach(s => {
+                        if (s.getAttribute('data-value') <= value) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // Form submission
+            document.getElementById('reviewForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const review = {
+                    name: document.getElementById('name').value,
+                    rating: document.getElementById('ratingValue').value,
+                    review: document.getElementById('review').value,
+                    date: new Date().toISOString()
+                };
+
+                // Get existing reviews or initialize empty array
+                let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+                
+                // Add new review
+                reviews.push(review);
+                
+                // Save back to localStorage
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+                
+                alert('Thank you for your review!');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html> 

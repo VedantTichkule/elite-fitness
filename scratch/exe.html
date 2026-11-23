@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Exercises</title>
+    <style>
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #001f3f, #003366); /* Dark Light Blue */
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 5px 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Sidebar Title */
+        .sidebar-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+            color: #00e5ff;
+        }
+
+        .exercise-group {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            color: #00e5ff;
+            font-size: 20px;
+            text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff;
+        }
+
+        .exercise-group:hover {
+            background: #00e5ff;
+            color: black;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #00e5ff;
+        }
+
+        /* Right Section */
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            padding: 20px;
+        }
+
+        /* Right Section Title */
+        .right-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 0 0 15px #ff00ff;
+            margin-bottom: 20px;
+        }
+
+        .exercise-display {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .exercise-display.active {
+            opacity: 1;
+        }
+
+        .exercise-display h2 {
+            font-size: 32px;
+            text-shadow: 0 0 15px #ff00ff;
+        }
+
+        .exercise-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 600px;
+        }
+
+        .exercise {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 45%;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .exercise:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+        }
+
+        .exercise img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .exercise p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #ff80ff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-title">GYM EXERCISES</div>
+    <div class="exercise-group" onclick="showExercises('chest')">Chest</div>
+    <div class="exercise-group" onclick="showExercises('biceps')">Biceps</div>
+    <div class="exercise-group" onclick="showExercises('back')">Back</div>
+    <div class="exercise-group" onclick="showExercises('triceps')">Triceps</div>
+    <div class="exercise-group" onclick="showExercises('legs')">Legs</div>
+    <div class="exercise-group" onclick="showExercises('shoulders')">Shoulders</div>
+</div>
+
+<!-- Right Side -->
+<div class="right-section">
+    <div class="right-title">TYPES OF EXERCISES</div>
+    <div class="exercise-display" id="exercise-display">
+        <h2 id="exercise-title">Select an Exercise</h2>
+        <div class="exercise-container" id="exercise-container"></div>
+    </div>
+</div>
+
+<script>
+    const exercises = {
+        chest: [
+            { name: "Push Ups", img: "https://via.placeholder.com/150" },
+            { name: "Bench Press", img: "https://via.placeholder.com/150" },
+            { name: "Chest Fly", img: "https://via.placeholder.com/150" },
+            { name: "Incline Press", img: "https://via.placeholder.com/150" },
+           
+        ],
+        biceps: [
+            { name: "Barbell Curl", img: "https://via.placeholder.com/150" },
+            { name: "Hammer Curl", img: "https://via.placeholder.com/150" },
+            { name: "Preacher Curl", img: "https://via.placeholder.com/150" },
+            { name: "Concentration Curl", img: "https://via.placeholder.com/150" },
+            
+        ],
+        back: [
+            { name: "Deadlift", img: "https://via.placeholder.com/150" },
+            { name: "Pull Ups", img: "https://via.placeholder.com/150" },
+            { name: "Barbell Rows", img: "https://via.placeholder.com/150" },
+            { name: "Lat Pulldown", img: "https://via.placeholder.com/150" },
+           
+        ],
+        triceps: [
+            { name: "Tricep Dips", img: "https://via.placeholder.com/150" },
+            { name: "Skull Crushers", img: "https://via.placeholder.com/150" },
+            { name: "Tricep Kickbacks", img: "https://via.placeholder.com/150" },
+            { name: "Close-Grip Bench Press", img: "https://via.placeholder.com/150" },
+            
+        ],
+        legs: [
+            { name: "Squats", img: "https://via.placeholder.com/150" },
+            { name: "Lunges", img: "https://via.placeholder.com/150" },
+            { name: "Leg Press", img: "./stock/leg press.mp4" },
+            { name: "Leg Curls", img: "https://via.placeholder.com/150" },
+            
+        ],
+        shoulders: [
+            { name: "Shoulder Press", img: "https://via.placeholder.com/150" },
+            { name: "Lateral Raise", img: "https://via.placeholder.com/150" },
+            { name: "Front Raise", img: "https://via.placeholder.com/150" },
+            { name: "Arnold Press", img: "https://via.placeholder.com/150" },
+           
+        ]
+    };
+
+    function showExercises(type) {
+        const display = document.getElementById("exercise-display");
+        const container = document.getElementById("exercise-container");
+        const title = document.getElementById("exercise-title");
+
+        title.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        container.innerHTML = "";
+
+        exercises[type].forEach(exercise => {
+            const div = document.createElement("div");
+            div.classList.add("exercise");
+            div.innerHTML = `<img src="${exercise.img}" alt="${exercise.name}">
+                            <p>${exercise.name}</p>`;
+            container.appendChild(div);
+        });
+
+        display.classList.add("active");
+    }
+</script>
+
+</body>
+</html>
