@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+*.env
+!.env.example
+
+# Logs
+npm-debug.log*
+query_results.txt
+
+# Large media shipped with the project
+stock/*.mp4
+stock/*.mov
+
+# OS clutter
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Installer (not source)
+Postman-win64-Setup.exe
